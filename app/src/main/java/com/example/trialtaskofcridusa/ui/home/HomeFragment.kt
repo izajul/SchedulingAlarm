@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.trialtaskofcridusa.R
@@ -33,6 +34,7 @@ class HomeFragment : Fragment() {
     lateinit var submitBtn : Button
     lateinit var retroClient: RetroClient
     lateinit var checkBox: CheckBox
+    lateinit var progressbar:ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +48,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewClick(root: View){
+        progressbar = root.findViewById(R.id.progressbar)
         mName = root.findViewById(R.id.contact_name)
         mEmail = root.findViewById(R.id.contact_email)
         mPhone = root.findViewById(R.id.contact_phone)
@@ -61,6 +64,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun submitData() {
+
         var strName : String = FunctionsUtils.getText(mName).trim()
         var strPhone : String = FunctionsUtils.getText(mPhone).trim()
         var strEmail : String = FunctionsUtils.getText(mEmail).trim()
@@ -73,12 +77,10 @@ class HomeFragment : Fragment() {
         if ( strName.isEmpty()
             or strPhone.isEmpty()
             or strEmail.isEmpty()
-            or strAddress.isEmpty()
-            or strDrug.isEmpty()
-            or strFood.isEmpty()){
+            or strAddress.isEmpty()){
             Toast.makeText(context, "Fields should not empty!", Toast.LENGTH_SHORT).show()
         } else {
-
+            progressbar.visibility= View.VISIBLE
             params["emergency_contact_name"] = strName
             params["primary_care_contact_number"] = strPhone
             params["primary_care_contact_email"] = strEmail
@@ -99,11 +101,13 @@ class HomeFragment : Fragment() {
                     if (FunctionsUtils.getStrFromJsonObject(data!!,Utils.RESP_ERROR_STATUS).equals("false")){
                         FunctionsUtils.showTopSnacbar(context!!,view!!,FunctionsUtils.getStrFromJsonObject(data,Utils.RESP_MESSAGE))
                     }
+                    progressbar.visibility= View.GONE
                 }
 
                 override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
                     t?.message?.let { Log.e("response_", it) }
                     FunctionsUtils.showTopSnacbar(context!!,view!!,"Error Occurs !!!")
+                    progressbar.visibility= View.GONE
                 }
 
             })

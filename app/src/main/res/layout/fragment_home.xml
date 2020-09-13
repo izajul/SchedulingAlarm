@@ -8,6 +8,15 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/bottom_nav_height"
     tools:context=".ui.home.HomeFragment">
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="#252525"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:fillViewport="true"
@@ -66,7 +75,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="gone"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
