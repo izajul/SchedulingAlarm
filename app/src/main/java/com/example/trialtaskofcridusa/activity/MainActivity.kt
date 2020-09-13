@@ -1,9 +1,6 @@
 package com.example.trialtaskofcridusa.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -26,6 +23,8 @@ class MainActivity : AppCompatActivity() {
                     WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
                     WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
         )
+
+// enable show notification over lock screen manually
 
 //        val intent = Intent()
 //        when {

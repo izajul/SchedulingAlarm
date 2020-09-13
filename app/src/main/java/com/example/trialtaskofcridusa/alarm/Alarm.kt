@@ -40,7 +40,6 @@ class Alarm(var alarmId: Int, var hour: Int?, var minute: Int?, var title: Strin
                 alarmPendingIntent
             )
         }
-        //Toast.makeText(context, "Alarm set in " + calendar.time , Toast.LENGTH_LONG).show()
         isStarted = true
     }
 

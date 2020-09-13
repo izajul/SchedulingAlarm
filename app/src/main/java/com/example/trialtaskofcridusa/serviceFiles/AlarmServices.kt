@@ -39,7 +39,7 @@ class AlarmServices : Service() {
          }
          if (!isActiveScreen){
              var wl: PowerManager.WakeLock = powerManager.newWakeLock(SCREEN_DIM_WAKE_LOCK or ACQUIRE_CAUSES_WAKEUP,"myApp:notification")
-             wl.acquire()
+             wl.acquire(10*60*1000L /*10 minutes*/)
          }
 
          title = intent?.getStringExtra(Utils.ALARM_TITLE).toString()
