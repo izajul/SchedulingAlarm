@@ -98,10 +98,10 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                               Utils.RESP_ERROR_STATUS
                          ) == "false"
                     ) {
-                         FunctionsUtils.showTopSnacbar(context!!, view!!, "Alarm Set Successfully")
+                         context?.let { FunctionsUtils.showTopSnacbar(it, view!!, "Alarm Set Successfully") }
                          var arr:JsonArray = FunctionsUtils.getJArrayFromJObject(obj,Utils.RESP_DATA)
-                         var alarms = FunctionsUtils.getAlarmListFromJArray(activity!!,arr)
-                         adapter.setItems(alarms)
+                         var alarms = activity?.let { FunctionsUtils.getAlarmListFromJArray(it,arr) }
+                         alarms?.let { adapter.setItems(it) }
                     }
                     progressBar.visibility = View.GONE
                }
@@ -132,7 +132,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                          ) == "false"
                     ) {
                          var arr:JsonArray = FunctionsUtils.getJArrayFromJObject(obj,Utils.RESP_DATA)
-                         adapter.setItems(FunctionsUtils.getAlarmListFromJArray(activity!!,arr))
+                         context?.let { adapter.setItems(FunctionsUtils.getAlarmListFromJArray(it,arr))}
                     }
                     progressBar.visibility = View.GONE
                }
@@ -140,7 +140,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
                     t?.message?.let {
                          Log.e(TAG, it)
-                         FunctionsUtils.showTopSnacbar(context!!, view!!, it)
+                         context?.let { it1 -> FunctionsUtils.showTopSnacbar(it1, view!!, it) }
                     }
                     progressBar.visibility = View.GONE
                }

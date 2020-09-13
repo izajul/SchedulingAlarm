@@ -89,7 +89,7 @@ class FunctionsUtils {
             snacBar.show()
         }
 
-        fun getAlarmListFromJArray(context: Activity, array: JsonArray): List<Alarm>{
+        fun getAlarmListFromJArray(context: Context, array: JsonArray): List<Alarm>{
             var alarms: MutableList<Alarm> = ArrayList()
 
             for (element:JsonElement in array){

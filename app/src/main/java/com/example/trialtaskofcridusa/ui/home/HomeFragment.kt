@@ -98,15 +98,21 @@ class HomeFragment : Fragment() {
                 ) {
                     var data : JsonObject? = response?.body()
                     data?.let { Log.d("response_",Gson().toJson(data)) }
-                    if (FunctionsUtils.getStrFromJsonObject(data!!,Utils.RESP_ERROR_STATUS).equals("false")){
-                        FunctionsUtils.showTopSnacbar(context!!,view!!,FunctionsUtils.getStrFromJsonObject(data,Utils.RESP_MESSAGE))
+                    if (FunctionsUtils.getStrFromJsonObject(data!!,Utils.RESP_ERROR_STATUS) == "false"){
+                        if (context!=null && view!=null){
+                            FunctionsUtils.showTopSnacbar(context!!,
+                                view!!,FunctionsUtils.getStrFromJsonObject(data,Utils.RESP_MESSAGE))
+                        }
                     }
                     progressbar.visibility= View.GONE
                 }
 
                 override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
                     t?.message?.let { Log.e("response_", it) }
-                    FunctionsUtils.showTopSnacbar(context!!,view!!,"Error Occurs !!!")
+                    if (context!=null && view!=null){
+                        context?.let { FunctionsUtils.showTopSnacbar(context!!, view!!,"Error Occurs !!!") }
+                    }
+
                     progressbar.visibility= View.GONE
                 }
 
