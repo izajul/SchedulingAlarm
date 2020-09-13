@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TrialTaskOfCridusa</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="notification_channel_Name">notification_channel_name</string>
+    <string name="notification_channel_desc">notification_channel_description</string>
+</resources>
