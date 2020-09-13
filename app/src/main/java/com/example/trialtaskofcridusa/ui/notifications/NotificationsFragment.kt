@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TimePicker
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
      lateinit var recyclerView: RecyclerView
      lateinit var adapter: AlarmListAdapter
      lateinit var retroClient: RetroClient
+     lateinit var progressBar:ProgressBar
      @RequiresApi(Build.VERSION_CODES.M)
      override fun onCreateView(
           inflater: LayoutInflater,
@@ -49,6 +51,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
 
      @RequiresApi(Build.VERSION_CODES.M)
      private fun initClickView(root: View) {
+          progressBar = root.findViewById(R.id.progressbar)
           recyclerView = root.findViewById(R.id.alarmListRC)
           recyclerView.layoutManager = LinearLayoutManager(context)
           adapter = AlarmListAdapter(this)
@@ -80,6 +83,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
 
      @RequiresApi(Build.VERSION_CODES.M)
      private fun submitAlarm(timePicker: TimePicker) {
+          progressBar.visibility = View.VISIBLE
           var params  =  HashMap<String, Any>()
           params[Utils.PRAM_KEY_TIMES] =
                "${timePicker.hour}:${timePicker.minute}" // time picker set time 24h format
@@ -99,6 +103,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                          var alarms = FunctionsUtils.getAlarmListFromJArray(activity!!,arr)
                          adapter.setItems(alarms)
                     }
+                    progressBar.visibility = View.GONE
                }
 
                override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
@@ -106,6 +111,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                          Log.e(TAG, it)
                          FunctionsUtils.showTopSnacbar(context!!, view!!, it)
                     }
+                    progressBar.visibility = View.GONE
 
                }
 
@@ -114,6 +120,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
      }
 
      private fun getAlarms(){
+
           var call: Call<JsonObject?>? = retroClient.getApi().getNotification()
           call!!.enqueue(object : Callback<JsonObject?> {
                override fun onResponse(call: Call<JsonObject?>?, response: Response<JsonObject?>?) {
@@ -127,6 +134,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                          var arr:JsonArray = FunctionsUtils.getJArrayFromJObject(obj,Utils.RESP_DATA)
                          adapter.setItems(FunctionsUtils.getAlarmListFromJArray(activity!!,arr))
                     }
+                    progressBar.visibility = View.GONE
                }
 
                override fun onFailure(call: Call<JsonObject?>?, t: Throwable?) {
@@ -134,7 +142,7 @@ class NotificationsFragment : Fragment() , AlarmListAdapter.onToggleSwitch{
                          Log.e(TAG, it)
                          FunctionsUtils.showTopSnacbar(context!!, view!!, it)
                     }
-
+                    progressBar.visibility = View.GONE
                }
 
           })
