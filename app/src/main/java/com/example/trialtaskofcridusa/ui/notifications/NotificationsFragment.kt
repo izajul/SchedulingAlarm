@@ -21,44 +21,44 @@ import kotlin.random.Random
 
 
 class NotificationsFragment : Fragment() {
-    lateinit var recyclerView: RecyclerView
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        initClickView(root)
-        return root
-    }
+     lateinit var recyclerView: RecyclerView
+     @RequiresApi(Build.VERSION_CODES.M)
+     override fun onCreateView(
+          inflater: LayoutInflater,
+          container: ViewGroup?,
+          savedInstanceState: Bundle?
+     ): View? {
+          val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+          initClickView(root)
+          return root
+     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun initClickView(root: View) {
-        recyclerView = root.findViewById(R.id.alarmListRC)
-        var btn: FloatingActionButton = root.findViewById(R.id.fab)
-        btn.setOnClickListener {
-            val dialogView: View = layoutInflater.inflate(R.layout.bottom_sheet_dialog_layout, null)
-            val dialog = BottomSheetDialog(context!!)
-            dialog.setContentView(dialogView)
-            dialog.show()
-            addAlarmSchedule(dialog!!)
-        }
-    }
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun addAlarmSchedule(view: Dialog){
-        var timePicker: TimePicker = view.findViewById(R.id.timePicker)
-        var btn: Button  = view.findViewById(R.id.start)
-        Log.d("date_time", timePicker.hour.toString())
-        btn.setOnClickListener{
-            var alarm = Alarm(
-                Random(Int.MAX_VALUE).nextInt(),
-                timePicker.currentHour,
-                timePicker.currentMinute,
-                "Test Alarm Title"
-            )
-            alarm.startAlarm(context!!)
+     @RequiresApi(Build.VERSION_CODES.M)
+     private fun initClickView(root: View) {
+          recyclerView = root.findViewById(R.id.alarmListRC)
+          var btn: FloatingActionButton = root.findViewById(R.id.fab)
+          btn.setOnClickListener {
+               val dialogView: View = layoutInflater.inflate(R.layout.bottom_sheet_dialog_layout, null)
+               val dialog = BottomSheetDialog(context!!)
+               dialog.setContentView(dialogView)
+               dialog.show()
+               addAlarmSchedule(dialog!!)
+          }
+     }
+     @RequiresApi(Build.VERSION_CODES.M)
+     private fun addAlarmSchedule(view: Dialog){
+          var timePicker: TimePicker = view.findViewById(R.id.timePicker)
+          var btn: Button  = view.findViewById(R.id.start)
+          Log.d("date_time", timePicker.hour.toString())
+          btn.setOnClickListener{
+               var alarm = Alarm(
+                    Random(Int.MAX_VALUE).nextInt(),
+                    timePicker.currentHour,
+                    timePicker.currentMinute,
+                    "Test Alarm Title"
+               )
+               alarm.startAlarm(context!!)
 
-        }
-    }
+          }
+     }
 }
