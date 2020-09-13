@@ -16,4 +16,7 @@ interface Api {
     @FormUrlEncoded
     @POST("TrialNotification")
     fun setNotification(@FieldMap value: HashMap<String, Any>): Call<JsonObject?>?
+
+    @POST("TrialNotification")
+    fun getNotification(): Call<JsonObject?>?
 }

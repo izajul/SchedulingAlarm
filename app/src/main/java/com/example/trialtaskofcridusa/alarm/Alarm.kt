@@ -14,6 +14,8 @@ import java.util.*
 
 class Alarm(var alarmId: Int, var hour: Int?, var minute: Int?, var title: String) {
 
+    var isStarted: Boolean = false
+
     fun startAlarm(context: Context){
         var alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(context, AlarmBroadcastReceiver::class.java).putExtra(
@@ -24,14 +26,22 @@ class Alarm(var alarmId: Int, var hour: Int?, var minute: Int?, var title: Strin
 
         var calendar = FunctionsUtils.getCalender(hour,minute)
 
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            //System.currentTimeMillis()+10000, //just for test
-            Utils.ALARM_DAILY,
-            alarmPendingIntent
-        )
-        Toast.makeText(context, "Alarm set in " + calendar.time , Toast.LENGTH_LONG).show()
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                alarmPendingIntent
+            )
+        }else{
+            alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                Utils.ALARM_DAILY,
+                alarmPendingIntent
+            )
+        }
+        //Toast.makeText(context, "Alarm set in " + calendar.time , Toast.LENGTH_LONG).show()
+        isStarted = true
     }
 
     fun cancelAlarm(context: Context){
@@ -39,5 +49,6 @@ class Alarm(var alarmId: Int, var hour: Int?, var minute: Int?, var title: Strin
         val alarmIntent = Intent(context, AlarmBroadcastReceiver::class.java)
         val alarmPendingIntent = PendingIntent.getBroadcast(context, alarmId, alarmIntent, 0)
         alarmManager.cancel(alarmPendingIntent)
+        isStarted = false
     }
 }

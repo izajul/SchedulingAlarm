@@ -14,5 +14,12 @@ class Utils {
         val RESP_ERROR_STATUS = "error"
         val RESP_MESSAGE = "msg"
         val RESP_DATA = "data"
+
+        var RESP_DATA_ID = "id"
+        var RESP_DATA_TIME = "times"
+        var RESP_DATA_CREATED_AT = "created_at"
+
+        val PRAM_KEY_TIMES = "times"
+        val PRAM_KEY_AMPM = "ampm"
     }
 }

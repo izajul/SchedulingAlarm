@@ -6,12 +6,9 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
-import android.os.Build
-import android.os.IBinder
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.view.Window
-import android.view.WindowManager
+import android.os.*
+import android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP
+import android.os.PowerManager.SCREEN_DIM_WAKE_LOCK
 import androidx.core.app.NotificationCompat
 import com.example.trialtaskofcridusa.R
 import com.example.trialtaskofcridusa.activity.NotificationActivity
@@ -33,6 +30,18 @@ class AlarmServices : Service() {
     }
 
      override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+         var powerManager: PowerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+
+         var isActiveScreen = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
+             powerManager.isInteractive
+         } else {
+             powerManager.isScreenOn
+         }
+         if (!isActiveScreen){
+             var wl: PowerManager.WakeLock = powerManager.newWakeLock(SCREEN_DIM_WAKE_LOCK or ACQUIRE_CAUSES_WAKEUP,"myApp:notification")
+             wl.acquire()
+         }
+
          title = intent?.getStringExtra(Utils.ALARM_TITLE).toString()
          val notificationId: Int = Random().nextInt()
          val snoozePendingIntent: PendingIntent? = NotificationActivity.getSnoozePendingIntent(this)

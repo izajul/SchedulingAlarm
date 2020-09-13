@@ -1,19 +1,27 @@
 package com.example.trialtaskofcridusa.utils
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
+import com.example.trialtaskofcridusa.alarm.Alarm
+import com.example.trialtaskofcridusa.broadcastFiles.AlarmBroadcastReceiver
 import com.example.trialtaskofcridusa.broadcastFiles.SystemRebootReceiver
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.min
 
 
@@ -39,7 +47,7 @@ class FunctionsUtils {
             return array
         }
 
-        fun getStrFromJsonObject(jsonObject: JsonObject,key: String): String {
+        fun getStrFromJsonObject(jsonObject: JsonObject, key: String): String {
             var str: String = ""
             str = jsonObject.get(key).asString
             return str
@@ -79,6 +87,22 @@ class FunctionsUtils {
             //view.background = context.getDrawable(context,R.drawable.custom_drawable) // for custom background
             snacBar.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
             snacBar.show()
+        }
+
+        fun getAlarmListFromJArray(context: Activity, array: JsonArray): List<Alarm>{
+            var alarms: MutableList<Alarm> = ArrayList()
+
+            for (element:JsonElement in array){
+                var obj: JsonObject = element.asJsonObject
+                var created_at = obj.get(Utils.RESP_DATA_CREATED_AT).asString
+                var t = obj.get(Utils.RESP_DATA_TIME).asString
+                var time = t.split(":").toTypedArray()
+                var alarm = Alarm(obj.get(Utils.RESP_DATA_ID).asInt+11111,
+                    time[0].toInt(),time[1].toInt(),"Test Alarm- $created_at")
+                alarm.startAlarm(context)
+                alarms.add(alarm)
+            }
+            return alarms.reversed()
         }
 
 

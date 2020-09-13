@@ -14,7 +14,7 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         Toast.makeText(context, "Alarm....", Toast.LENGTH_LONG).show();
         val intentService = Intent(context, AlarmServices::class.java)
-            .putExtra( Utils.ALARM_TITLE, intent?.getStringExtra(Utils.ALARM_TITLE))
+            .putExtra( Utils.ALARM_TITLE, "Test Alarm Title")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intentService)
         } else {
